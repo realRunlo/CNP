@@ -1,0 +1,5 @@
+- name: Deploy VM
+  hosts: localhost
+  gather_facts: no
+  roles:
+    - vm
