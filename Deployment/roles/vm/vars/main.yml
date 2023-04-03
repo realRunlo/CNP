@@ -4,11 +4,11 @@ instances:
 
   gce_machine_type: e2-micro
 
-  gce_source_image: projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-l$
+  gce_source_image: projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts
 
   gce_zone: europe-west1-b 
 
-  gce_project: CNP-QSI
+  gce_project: cnp-qsi 
 
 
 
