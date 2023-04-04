@@ -16,10 +16,11 @@
           source_image: "{{instances[0].gce_source_image}}"
 
     network_interfaces:
-
-    - network:
-
-        selfLink: global/networks/default     
+    - network: 
+        name: "projects/{{instances[0].gce_project}}/global/networks/network"
+      access_configs:
+      - name: "External NAT"
+        type: "ONE_TO_ONE_NAT"
 
     metadata:
 
