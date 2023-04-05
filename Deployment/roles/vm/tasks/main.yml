@@ -40,3 +40,7 @@
 
     status: RUNNING
 
+- name: Install iperf3
+  ansible.builtin.apt:
+    name: iperf3
+

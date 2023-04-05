@@ -1,4 +1,5 @@
 import ansible_runner
-r = ansible_runner.run(private_data_dir='/ansible', playbook='../playbook.yml')
+r = ansible_runner.run(private_data_dir='../Deployment/', playbook='../Deployment/playbook.yml')
+
 print("{}: {}".format(r.status, r.rc))
 

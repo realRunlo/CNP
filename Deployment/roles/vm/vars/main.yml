@@ -1,19 +1,17 @@
 instances:
 
-- name: worker
+- name: dummy
 
   gce_machine_type: e2-micro
 
-  gce_source_image: projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts
+  gce_source_image: projects/ubuntu-os-cloud/global/images/family/ubuntu-1804-lts
 
   gce_zone: europe-west1-b 
 
   gce_project: cnp-qsi 
 
-
-
 admin_username: admin
 
 admin_ssh_key: ssh-rsa +Bz9BUWyVgDF
 
-service_account_contents: "{{ lookup('file', 'credentials.yml') }}"
+service_account_contents: "{{ lookup('file', 'cred.json') }}"
