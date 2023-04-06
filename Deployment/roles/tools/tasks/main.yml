@@ -1,0 +1,9 @@
+- name: Apt update
+  become: yes
+  ansible.builtin.shell:
+    cmd: sudo apt update
+
+- name: Install iperf3
+  become: yes
+  ansible.builtin.shell:
+    cmd: sudo apt-get install -y iperf3

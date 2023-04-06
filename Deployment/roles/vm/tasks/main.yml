@@ -40,7 +40,26 @@
 
     status: RUNNING
 
-- name: Install iperf3
-  ansible.builtin.apt:
-    name: iperf3
+  register: result
+
+- name: Wait for SSH to become available
+  wait_for:
+    host: "{{ result.networkInterfaces[0].accessConfigs[0].natIP }}"
+    port: 22
+    timeout: 300
+  become: no
+
+- name: Add GCP instance to inventory
+  add_host:
+    name: dummy
+    ansible_host: "{{ result.networkInterfaces[0].accessConfigs[0].natIP }}"
+    ansible_user: runlo
+    ansible_ssh_private_key_file: ~/.ssh/id_rsa
+    ansible_connection: ssh
+    ansible_python_interpreter: /usr/bin/python3
+
+
+
+
+
 

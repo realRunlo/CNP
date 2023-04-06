@@ -12,6 +12,6 @@ instances:
 
 admin_username: admin
 
-admin_ssh_key: ssh-rsa +Bz9BUWyVgDF
+admin_ssh_key: "{{ lookup('file', '/Users/runlo/.ssh/id_rsa.pub') }}"
 
 service_account_contents: "{{ lookup('file', 'cred.json') }}"

@@ -3,3 +3,9 @@
   gather_facts: no
   roles:
     - vm
+
+- name: Installing tools
+  hosts: dummy
+  gather_facts: no
+  roles:
+    - tools
