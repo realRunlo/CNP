@@ -13,6 +13,13 @@
         status: "RUNNING"
       register: result
     
+    - name: Wait for SSH to become available
+      wait_for:
+        host: "{{ result.networkInterfaces[0].accessConfigs[0].natIP }}"
+        port: 22
+        timeout: 300
+      become: no
+
     - name: Add GCP instance to inventory
       add_host:
         name: "{{instances[0].gce_zone}}-instance"
@@ -21,19 +28,44 @@
         ansible_ssh_private_key_file: ~/.ssh/id_rsa
         ansible_connection: ssh
         ansible_python_interpreter: /usr/bin/python3
+      
+    # - name: Create instance results directory
+    #   become: yes
+    #   ansible.builtin.shell:
+    #     cmd: mkdir results/{{instances[0].gce_zone}}
 
-    - name: Init server
+    - name: Init iperf remote server 
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -s -p 5201
+        cmd: sudo iperf -s -p 5201
       async: 60
       poll: 0
       delegate_to: "{{instances[0].gce_zone}}-instance"
 
-    - name: Init server
+    - name: Iperf - Bandwith test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5201 > bandwith.txt
+        cmd: sudo iperf -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5201 > results/{{instances[0].gce_zone}}/bandwith.txt
+      delegate_to: localhost
+
+    - name: Init iperf3 remote server 
+      become: yes
+      ansible.builtin.shell:
+        cmd: sudo iperf3 -s -p 5202
+      async: 60
+      poll: 0
+      delegate_to: "{{instances[0].gce_zone}}-instance"
+    
+    - name: Iperf3 - udp test
+      become: yes
+      ansible.builtin.shell:
+        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -u -p 5202 > results/{{instances[0].gce_zone}}/udp.txt
+      delegate_to: localhost
+
+    - name: Iperf3 - tcp test
+      become: yes
+      ansible.builtin.shell:
+        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 > results/{{instances[0].gce_zone}}/tcp.txt
       delegate_to: localhost
 
     - name: Turn off instance
