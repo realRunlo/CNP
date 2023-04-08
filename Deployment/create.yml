@@ -5,7 +5,7 @@
     - vm
 
 - name: Installing tools
-  hosts: dummy
+  hosts: europe-west1-b-instance 
   gather_facts: no
   roles:
     - tools

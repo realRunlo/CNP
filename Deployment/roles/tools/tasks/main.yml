@@ -6,4 +6,4 @@
 - name: Install iperf3
   become: yes
   ansible.builtin.shell:
-    cmd: sudo apt-get install -y iperf3
+    cmd: sudo apt install -y iperf3

@@ -1,0 +1,8 @@
+- name: Stop instance
+  gcp_compute_instance:
+    name: "{{instances[0].gce_zone}}-instance"
+    project: "{{instances[0].gce_project}}"
+    auth_kind: serviceaccount
+    service_account_contents: "{{service_account_contents}}"
+    zone: "{{instances[0].gce_zone}}"
+    status: "TERMINATED"
