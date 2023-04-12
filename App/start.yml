@@ -42,10 +42,10 @@
       poll: 0
       delegate_to: "{{instances[0].gce_zone}}-instance"
 
-    - name: Iperf - Bandwith test
+    - name: Iperf - Bandwidth test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5201 > results/{{instances[0].gce_zone}}/bandwith.txt
+        cmd: sudo iperf -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5201 > results/{{instances[0].gce_zone}}/bandwidth.txt
       delegate_to: localhost
 
     - name: Init iperf3 remote server 

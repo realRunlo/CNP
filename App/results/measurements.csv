@@ -1,0 +1,2 @@
+Zone,Time,Bandwidth,Jitter (To Server),Jitter (From Server),Packet Loss (To Server),Packet Loss (From Server),Bit Rate (With UDP - To Server),Bit Rate (With UDP - From Server),Bit Rate (With TCP - To Server),Bit Rate (With TCP - From Server)
+ZONA A DEFINIR,TIMESTAMP A DEFINIR,87.4,0.763,0.000,0.32,0,1.04,1.05,63.5,62.9
