@@ -45,13 +45,13 @@
     - name: Iperf - Bandwidth test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5201 > results/{{instances[0].gce_zone}}/bandwidth.txt
+        cmd: sudo iperf -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5201 -T "%Y-%m-%d %H:%M" > results/{{instances[0].gce_zone}}/bandwidth.txt
       delegate_to: localhost
 
     - name: Init iperf3 remote server 
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -s -p 5202
+        cmd: sudo iperf3 -s -p 5202 -T "%Y-%m-%d %H:%M"
       async: 60
       poll: 0
       delegate_to: "{{instances[0].gce_zone}}-instance"
@@ -59,13 +59,13 @@
     - name: Iperf3 - udp test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -u -p 5202 > results/{{instances[0].gce_zone}}/udp.txt
+        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -u -p 5202 -T "%Y-%m-%d %H:%M" > results/{{instances[0].gce_zone}}/udp.txt
       delegate_to: localhost
 
     - name: Iperf3 - tcp test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 > results/{{instances[0].gce_zone}}/tcp.txt
+        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 -T "%Y-%m-%d %H:%M" > results/{{instances[0].gce_zone}}/tcp.txt
       delegate_to: localhost
 
     - name: Turn off instance
@@ -76,3 +76,9 @@
         service_account_contents: "{{service_account_contents}}"
         zone: "{{instances[0].gce_zone}}"
         status: "TERMINATED"
+
+    #- name: Append new line into csv file [FALTA TESTAR]
+    #  become: yes
+    #  ansible.builtin.shell:
+    #    cmd: python3 build_csv.py {{instances[0].gce_zone}}
+    #  delegate_to: localhost

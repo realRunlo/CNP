@@ -1,4 +1,4 @@
-import csv, os , re
+import csv, os , re, sys
 
 FILENAME = "measurements.csv"
 
@@ -15,10 +15,8 @@ header_list = ["Zone", "Time", "Bandwidth",
 
 """
 TODO:
-- Arranjar forma de saber o nome da zona do servidor (buscar o nome da diretoria onde estão os ficheiros de teste???)
-- Arranjar forma de conseguir o timestamp dos testes (deve chegar Ano, Mes, Dia, Hora, Minuto)
-- Corrigir para adicionar só uma vez o header
-- Automatizar o processo de adicionar novas entradas no csv à medida que vamos fazendo os testes
+- [Ver se flag -T "%Y-%m-%d %H:%M" funciona] Arranjar forma de conseguir o timestamp dos testes (deve chegar Ano, Mes, Dia, Hora, Minuto)
+- [Ver se função ansible funciona] Automatizar o processo de adicionar novas entradas no csv à medida que vamos fazendo os testes
 """
 
 def append_line(line_list):
@@ -104,7 +102,7 @@ def get_bitrate_jitter_packet_loss_UDP(filename):
                     bitrate_fromServer = bitrate
                     jitter_fromServer = jitter
                     packetloss_fromServer = packetloss
-                print("UDP: " + str((bitrate_fromServer, bitrate_toServer, jitter_fromServer, jitter_toServer, packetloss_fromServer, packetloss_toServer)))
+                #print("UDP: " + str((bitrate_fromServer, bitrate_toServer, jitter_fromServer, jitter_toServer, packetloss_fromServer, packetloss_toServer)))
 
     udp_file_fp.close()
     return (bitrate_fromServer, bitrate_toServer, jitter_fromServer, jitter_toServer, packetloss_fromServer, packetloss_toServer)
@@ -132,19 +130,27 @@ def get_bitrate_jitter_packet_loss_TCP(filename):
                     bitrate_toServer = bitrate
                 elif (origin == "receiver"):
                     bitrate_fromServer = bitrate
-                print("TCP: " + str((bitrate_toServer, bitrate_fromServer)))
+                #print("TCP: " + str((bitrate_toServer, bitrate_fromServer)))
 
 
     tcp_file_fp.close()
     return (bitrate_toServer, bitrate_fromServer)
 
 
-    
-# Create the header in csv file
-append_line(header_list) 
-line_to_add = process_files("ZONA A DEFINIR", 
-                            "europe-west1-b/bandwidth.txt", 
-                            "europe-west1-b/udp.txt",
-                            "europe-west1-b/tcp.txt")
+# Get the zone given as argument    
+zone = sys.argv[1]
 
-append_line(line_to_add)
+line_to_add = process_files(zone,
+                            zone + "/bandwidth.txt", 
+                            zone + "/udp.txt",
+                            zone + "/tcp.txt")
+
+if not os.path.isfile(FILENAME) or os.stat(FILENAME).st_size == 0:
+    with open(FILENAME, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(header_list)
+        writer.writerow(line_to_add)
+else:
+    with open(FILENAME, 'a+', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(line_to_add)
