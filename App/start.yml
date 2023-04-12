@@ -59,13 +59,13 @@
     - name: Iperf3 - udp test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -u -p 5202 -T "%Y-%m-%d %H:%M" > results/{{instances[0].gce_zone}}/udp.txt
+        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -u -p 5202 > results/{{instances[0].gce_zone}}/udp.txt
       delegate_to: localhost
 
     - name: Iperf3 - tcp test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 -T "%Y-%m-%d %H:%M" > results/{{instances[0].gce_zone}}/tcp.txt
+        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 > results/{{instances[0].gce_zone}}/tcp.txt
       delegate_to: localhost
 
     - name: Turn off instance

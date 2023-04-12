@@ -1,9 +1,11 @@
-import csv, os , re, sys
+import csv, os , re, sys, datetime
 
 FILENAME = "measurements.csv"
 
 # List with the values of the csv's header
-header_list = ["Zone", "Time", "Bandwidth", 
+header_list = ["Zone", 
+               "Month", "Day", "Hour", "Minute", 
+               "Bandwidth", 
                "Jitter (To Server)", 
                "Jitter (From Server)",
                "Packet Loss (To Server)",
@@ -13,9 +15,17 @@ header_list = ["Zone", "Time", "Bandwidth",
                "Bit Rate (With TCP - To Server)",
                "Bit Rate (With TCP - From Server)"]
 
+#header_list = ["Zone",
+#               "Month", "Day", "Hour", "Minute",
+#               "Bandwidth",
+#               "Jitter",
+#               "Packet Loss",
+#               "Bit Rate (With UDP)",
+#               "Bit Rate (With TCP)"
+#               ]
+
 """
 TODO:
-- [Ver se flag -T "%Y-%m-%d %H:%M" funciona] Arranjar forma de conseguir o timestamp dos testes (deve chegar Ano, Mes, Dia, Hora, Minuto)
 - [Ver se função ansible funciona] Automatizar o processo de adicionar novas entradas no csv à medida que vamos fazendo os testes
 """
 
@@ -28,13 +38,29 @@ def append_line(line_list):
     return f_object
 
 
-def get_zones (filepath):
-    """Get all the zones in a list"""
-    ls = [name for name in os.listdir(filepath) if os.path.isdir(name)] 
-    for l in ls:
-        re.sub('./', '', l)
-    return ls
+def get_timestamp ():
+    """Get timestamp "Month/Day Hour/Minute" and day of the week (in tuple)"""
+    now = datetime.datetime.now()
 
+    month = now.month
+    day = now.day
+    hour = now.hour
+    minute = now.minute
+    day_of_week = get_day_of_week(2023, month, day)
+    month = get_month(month)
+
+    return month, day, hour, minute, day_of_week
+
+def get_day_of_week(ano,mes,dia):
+    """Get the day of the week"""
+    intDay = datetime.date(year=ano, month=mes, day=dia).weekday()
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    return days[intDay]
+
+def get_month(mes):
+    """Get the month of the year"""
+    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    return months[mes-1]
 
 def process_files (zone, bdw_file, udp_file, tcp_file):
     """Handles all the three files from tests and append a line in the csv file"""
@@ -42,12 +68,17 @@ def process_files (zone, bdw_file, udp_file, tcp_file):
 
     bitrate_udp_fromServer = bitrate_udp_toServer = bitrate_tcp_fromServer = bitrate_tcp_toServer = jitter_fromServer = jitter_toServer = packetloss_fromServer = packetloss_toServer = bandwidth = ""
 
+    month, day, hour, minute, day_of_week = get_timestamp()
     bandwidth = get_bandwidth(bdw_file)
     bitrate_udp_fromServer, bitrate_udp_toServer, jitter_fromServer, jitter_toServer, packetloss_fromServer, packetloss_toServer = get_bitrate_jitter_packet_loss_UDP(udp_file)
     bitrate_tcp_fromServer, bitrate_tcp_toServer = get_bitrate_jitter_packet_loss_TCP(tcp_file)
 
     r.append(zone)
-    r.append("TIMESTAMP A DEFINIR")
+    r.append(month)
+    r.append(day)
+    r.append(hour)
+    r.append(minute)
+    r.append(day_of_week)
     r.append(bandwidth)
     r.append(jitter_fromServer)
     r.append(jitter_toServer)
