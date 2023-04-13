@@ -4,25 +4,18 @@ FILENAME = "measurements.csv"
 
 # List with the values of the csv's header
 header_list = ["Zone", 
-               "Month", "Day", "Hour", "Minute", 
+               "Datetime", 
                "Bandwidth", 
-               "Jitter (To Server)", 
-               "Jitter (From Server)",
-               "Packet Loss (To Server)",
-               "Packet Loss (From Server)",
-               "Bit Rate (With UDP - To Server)", 
-               "Bit Rate (With UDP - From Server)", 
-               "Bit Rate (With TCP - To Server)",
-               "Bit Rate (With TCP - From Server)"]
+               "Upload Jitter", 
+               "Download Jitter",
+               "Upload Packet Loss",
+               "Download Packet Loss",
+               "Upload Bit Rate (With UDP)", 
+               "Download Bit Rate (With UDP)", 
+               "Upload Bit Rate (With TCP)",
+               "Download Bit Rate (With TCP)"
+               ]
 
-#header_list = ["Zone",
-#               "Month", "Day", "Hour", "Minute",
-#               "Bandwidth",
-#               "Jitter",
-#               "Packet Loss",
-#               "Bit Rate (With UDP)",
-#               "Bit Rate (With TCP)"
-#               ]
 
 """
 TODO:
@@ -39,7 +32,7 @@ def append_line(line_list):
 
 
 def get_timestamp ():
-    """Get timestamp "Month/Day Hour/Minute" and day of the week (in tuple)"""
+    """Get timestamp "Month/Day Hour/Minute" and day of the week (in string)"""
     now = datetime.datetime.now()
 
     month = now.month
@@ -49,7 +42,8 @@ def get_timestamp ():
     day_of_week = get_day_of_week(2023, month, day)
     month = get_month(month)
 
-    return month, day, hour, minute, day_of_week
+    #Example: Monday 13 April 18:13
+    return str(day_of_week) + " " + str(day) + " " + str(month) + " " + str(hour) + ":" + str(minute)
 
 def get_day_of_week(ano,mes,dia):
     """Get the day of the week"""
@@ -68,17 +62,13 @@ def process_files (zone, bdw_file, udp_file, tcp_file):
 
     bitrate_udp_fromServer = bitrate_udp_toServer = bitrate_tcp_fromServer = bitrate_tcp_toServer = jitter_fromServer = jitter_toServer = packetloss_fromServer = packetloss_toServer = bandwidth = ""
 
-    month, day, hour, minute, day_of_week = get_timestamp()
+    timestamp = get_timestamp()
     bandwidth = get_bandwidth(bdw_file)
     bitrate_udp_fromServer, bitrate_udp_toServer, jitter_fromServer, jitter_toServer, packetloss_fromServer, packetloss_toServer = get_bitrate_jitter_packet_loss_UDP(udp_file)
     bitrate_tcp_fromServer, bitrate_tcp_toServer = get_bitrate_jitter_packet_loss_TCP(tcp_file)
 
     r.append(zone)
-    r.append(month)
-    r.append(day)
-    r.append(hour)
-    r.append(minute)
-    r.append(day_of_week)
+    r.append(timestamp)
     r.append(bandwidth)
     r.append(jitter_fromServer)
     r.append(jitter_toServer)
