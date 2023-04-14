@@ -11,28 +11,32 @@
         service_account_contents: "{{service_account_contents}}"
         zone: "{{instances[0].gce_zone}}"
         status: "RUNNING"
+
+    - name: get info on an instance
+      gcp_compute_instance_info:
+        filters:
+          - name = "{{instances[0].gce_zone}}-instance"
+        project: "{{instances[0].gce_project}}"
+        auth_kind: serviceaccount
+        service_account_contents: "{{service_account_contents}}"
+        zone: "{{instances[0].gce_zone}}"
       register: result
-    
+
     - name: Wait for SSH to become available
       wait_for:
-        host: "{{ result.networkInterfaces[0].accessConfigs[0].natIP }}"
+        host: "{{ result.resources[0].networkInterfaces[0].accessConfigs[0].natIP }}"
         port: 22
         timeout: 300
-      become: no
+      become: yes
 
     - name: Add GCP instance to inventory
       add_host:
         name: "{{instances[0].gce_zone}}-instance"
-        ansible_host: "{{ result.networkInterfaces[0].accessConfigs[0].natIP }}"
+        ansible_host: "{{ result.resources[0].networkInterfaces[0].accessConfigs[0].natIP }}"
         ansible_user: runlo
         ansible_ssh_private_key_file: ~/.ssh/id_rsa
         ansible_connection: ssh
         ansible_python_interpreter: /usr/bin/python3
-      
-    # - name: Create instance results directory
-    #   become: yes
-    #   ansible.builtin.shell:
-    #     cmd: mkdir results/{{instances[0].gce_zone}}
 
     - name: Init iperf remote server 
       become: yes
@@ -45,13 +49,13 @@
     - name: Iperf - Bandwidth test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5201 -T "%Y-%m-%d %H:%M" > results/{{instances[0].gce_zone}}/bandwidth.txt
+        cmd: sudo iperf -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -p 5201  > results/{{instances[0].gce_zone}}/bandwidth.txt
       delegate_to: localhost
 
     - name: Init iperf3 remote server 
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -s -p 5202 -T "%Y-%m-%d %H:%M"
+        cmd: sudo iperf3 -s -p 5202
       async: 60
       poll: 0
       delegate_to: "{{instances[0].gce_zone}}-instance"
@@ -59,13 +63,13 @@
     - name: Iperf3 - udp test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -u -p 5202 > results/{{instances[0].gce_zone}}/udp.txt
+        cmd: sudo iperf3 -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -u -p 5202 > results/{{instances[0].gce_zone}}/udp.txt
       delegate_to: localhost
 
     - name: Iperf3 - tcp test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -c {{result.networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 > results/{{instances[0].gce_zone}}/tcp.txt
+        cmd: sudo iperf3 -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 > results/{{instances[0].gce_zone}}/tcp.txt
       delegate_to: localhost
 
     - name: Turn off instance
@@ -77,8 +81,8 @@
         zone: "{{instances[0].gce_zone}}"
         status: "TERMINATED"
 
-    #- name: Append new line into csv file [FALTA TESTAR]
-    #  become: yes
-    #  ansible.builtin.shell:
-    #    cmd: python3 build_csv.py {{instances[0].gce_zone}}
-    #  delegate_to: localhost
+    - name: Append new line into csv file [FALTA TESTAR]
+      become: yes
+      ansible.builtin.shell:
+       cmd: python3 build_csv.py {{instances[0].gce_zone}}
+      delegate_to: localhost
