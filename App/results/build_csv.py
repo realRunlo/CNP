@@ -67,7 +67,7 @@ def process_files (zone, bdw_file, udp_file, tcp_file):
     timestamp = get_timestamp()
     bandwidth = get_bandwidth(bdw_file)
     max_bitrate_udp = get_max_bitrate_udp(udp_file)
-    max_bitrate_tcp = get_max_bitrate_udp(tcp_file)
+    max_bitrate_tcp = get_max_bitrate_tcp(tcp_file)
     bitrate_udp_download, bitrate_udp_upload, jitter_download, jitter_upload, packetloss_download, packetloss_upload = get_bitrate_jitter_packet_loss_UDP(udp_file)
     bitrate_tcp_download, bitrate_tcp_upload = get_bitrate_jitter_packet_loss_TCP(tcp_file)
 
@@ -89,7 +89,7 @@ def process_files (zone, bdw_file, udp_file, tcp_file):
 
 def get_bandwidth(filename):
     """Gets the bandwidth from file (the returned value type is String)"""
-    reg_exp = r'\[  \d+\] \d+.\d+-\d+.\d+ sec   \d+ KBytes  (?P<bandwidth>\-?(\d+\.?\d*|\d*\.?\d+)) Kbits\/sec'
+    reg_exp = r'\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+\s+KBytes\s+(?P<bandwidth>\-?(\d+\.?\d*|\d*\.?\d+))\s+Kbits\/sec'
     columns_pattern = re.compile(reg_exp)
     bandwidth = ""
     bdw_file_fp = open(filename, "r")
@@ -104,7 +104,7 @@ def get_bandwidth(filename):
 def get_bitrate_jitter_packet_loss_UDP(filename):
     """Gets the bitrate (from and to server), jitter (from and to server), packet loss (from and to server) from the UDP test"""
     # Digital number regex: "\-?(\d+\.?\d*|\d*\.?\d+)"
-    reg_exp = r'\[  \d+\]   \d+.\d+-\d+.\d+  sec  \d+.\d+ MBytes  (?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+)) Mbits\/sec  (?P<jitter>\-?(\d+\.?\d*|\d*\.?\d+)) ms  \d+\/\d+ \((?P<packetloss>\-?(\d+\.?\d*|\d*\.?\d+))%\)  (?P<origin>\w+)'
+    reg_exp = r'\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+.\d+\s+MBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+))\s+Mbits\/sec\s+(?P<jitter>\-?(\d+\.?\d*|\d*\.?\d+))\s+ms\s+\d+\/\d+\s+\((?P<packetloss>\-?(\d+\.?\d*|\d*\.?\d+))%\)\s+(?P<origin>\w+)'
     columns_pattern = re.compile(reg_exp)
 
     udp_file_fp = open(filename, "r")
@@ -138,7 +138,7 @@ def get_bitrate_jitter_packet_loss_UDP(filename):
 def get_bitrate_jitter_packet_loss_TCP(filename):
     """Gets the bitrate (from and to server) from TCP file"""
 
-    reg_exp = r'\[  \d+\]   \d+.\d+-\d+.\d+  sec  \d+.\d+ MBytes  (?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+)) Mbits/sec                  (?P<origin>\w+)'
+    reg_exp = r'\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+.\d+\s+MBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+))\s+Mbits/sec\s+(?P<origin>\w+)'
     columns_pattern = re.compile(reg_exp)
     
     bitrate = bitrate_download = bitrate_upload = origin = ""
@@ -164,12 +164,46 @@ def get_bitrate_jitter_packet_loss_TCP(filename):
     return (bitrate_upload, bitrate_download)
 
 def get_max_bitrate_tcp(filename):
-    """TODO: buscar todos os bitrates do ficheiro tcp e devolver o bitrate maximo (ignorar os valores médios)"""
-    return "DEFAULT VALUE"
+    """Get maximum bitrate from tcp file"""
+    reg_exp = r'^\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+.\d+\s+MBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+))\s+Mbits\/sec\s+$'
+    columns_pattern = re.compile(reg_exp)
+
+    bitrate = ""
+    all_bitrates_stored = []
+
+    tcp_file_fp = open(filename, "r")
+
+    lines_tcp_file_fp = tcp_file_fp.read().splitlines()
+    for line in lines_tcp_file_fp:
+        matches = columns_pattern.finditer(line)
+        for match in matches:
+            bitrate = match.group("bitrate")
+            all_bitrates_stored.append(float(bitrate))
+
+    tcp_file_fp.close()
+    print("TCP" + str(all_bitrates_stored))
+    return max(all_bitrates_stored)
 
 def get_max_bitrate_udp(filename):
-    """TODO: buscar todos os bitrates do ficheiro udp e devolver o bitrate maximo (ignorar os valores médios)"""
-    return "DEFAULT VALUE"
+    """Get maximum bitrate from udp file"""
+    reg_exp = r'^\[\s*\d+\]\s+\d+\.\d+-\d+\.\d+\s+sec\s+\d+\s+KBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+))\s+Mbits\/sec\s+\d+\s+$'
+    columns_pattern = re.compile(reg_exp)
+
+    bitrate = ""
+    all_bitrates_stored = []
+
+    tcp_file_fp = open(filename, "r")
+
+    lines_tcp_file_fp = tcp_file_fp.read().splitlines()
+    for line in lines_tcp_file_fp:
+        matches = columns_pattern.finditer(line)
+        for match in matches:
+            bitrate = match.group("bitrate")
+            all_bitrates_stored.append(float(bitrate))
+
+    tcp_file_fp.close()
+    print("UDP" + str(all_bitrates_stored))
+    return max(all_bitrates_stored)
 
 # Get the zone given as argument    
 zone = sys.argv[1]
