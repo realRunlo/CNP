@@ -12,8 +12,10 @@ header_list = ["Zone",
                "Download Packet Loss",
                "Upload Bit Rate (With UDP)", 
                "Download Bit Rate (With UDP)", 
+               "Max Bit Rate (With UDP)",
                "Upload Bit Rate (With TCP)",
-               "Download Bit Rate (With TCP)"
+               "Download Bit Rate (With TCP)",
+               "Max Bit Rate (With TCP)"
                ]
 
 
@@ -60,24 +62,28 @@ def process_files (zone, bdw_file, udp_file, tcp_file):
     """Handles all the three files from tests and append a line in the csv file"""
     r = []
 
-    bitrate_udp_fromServer = bitrate_udp_toServer = bitrate_tcp_fromServer = bitrate_tcp_toServer = jitter_fromServer = jitter_toServer = packetloss_fromServer = packetloss_toServer = bandwidth = ""
+    max_bitrate_udp = max_bitrate_tcp = bitrate_udp_download = bitrate_udp_upload = bitrate_tcp_download = bitrate_tcp_upload = jitter_download = jitter_upload = packetloss_download = packetloss_upload = bandwidth = ""
 
     timestamp = get_timestamp()
     bandwidth = get_bandwidth(bdw_file)
-    bitrate_udp_fromServer, bitrate_udp_toServer, jitter_fromServer, jitter_toServer, packetloss_fromServer, packetloss_toServer = get_bitrate_jitter_packet_loss_UDP(udp_file)
-    bitrate_tcp_fromServer, bitrate_tcp_toServer = get_bitrate_jitter_packet_loss_TCP(tcp_file)
+    max_bitrate_udp = get_max_bitrate_udp(udp_file)
+    max_bitrate_tcp = get_max_bitrate_udp(tcp_file)
+    bitrate_udp_download, bitrate_udp_upload, jitter_download, jitter_upload, packetloss_download, packetloss_upload = get_bitrate_jitter_packet_loss_UDP(udp_file)
+    bitrate_tcp_download, bitrate_tcp_upload = get_bitrate_jitter_packet_loss_TCP(tcp_file)
 
     r.append(zone)
     r.append(timestamp)
     r.append(bandwidth)
-    r.append(jitter_fromServer)
-    r.append(jitter_toServer)
-    r.append(packetloss_fromServer)
-    r.append(packetloss_toServer)
-    r.append(bitrate_udp_fromServer)
-    r.append(bitrate_udp_toServer)
-    r.append(bitrate_tcp_fromServer)
-    r.append(bitrate_tcp_toServer)
+    r.append(jitter_download)
+    r.append(jitter_upload)
+    r.append(packetloss_download)
+    r.append(packetloss_upload)
+    r.append(bitrate_udp_download)
+    r.append(bitrate_udp_upload)
+    r.append(max_bitrate_udp)
+    r.append(bitrate_tcp_download)
+    r.append(bitrate_tcp_upload)
+    r.append(max_bitrate_tcp)
 
     return r
 
@@ -103,7 +109,7 @@ def get_bitrate_jitter_packet_loss_UDP(filename):
 
     udp_file_fp = open(filename, "r")
 
-    bitrate_fromServer = bitrate_toServer = bitrate = jitter = jitter_fromServer = jitter_toServer = packetloss_fromServer = packetloss_toServer = packetloss = origin = ""
+    bitrate_download = bitrate_upload = bitrate = jitter = jitter_download = jitter_upload = packetloss_download = packetloss_upload = packetloss = origin = ""
     
     lines_udp_file_fp = udp_file_fp.read().splitlines()
     for line in lines_udp_file_fp:
@@ -116,17 +122,17 @@ def get_bitrate_jitter_packet_loss_UDP(filename):
             #print((bitrate, jitter, packetloss, origin))
             if (bitrate != "" and jitter != "" and packetloss != "" and origin != ""):
                 if (origin == "sender"):
-                    bitrate_toServer = bitrate
-                    jitter_toServer = jitter
-                    packetloss_toServer = packetloss
+                    bitrate_upload = bitrate
+                    jitter_upload = jitter
+                    packetloss_upload = packetloss
                 elif (origin == "receiver"):
-                    bitrate_fromServer = bitrate
-                    jitter_fromServer = jitter
-                    packetloss_fromServer = packetloss
-                #print("UDP: " + str((bitrate_fromServer, bitrate_toServer, jitter_fromServer, jitter_toServer, packetloss_fromServer, packetloss_toServer)))
+                    bitrate_download = bitrate
+                    jitter_download = jitter
+                    packetloss_download = packetloss
+                #print("UDP: " + str((bitrate_download, bitrate_upload, jitter_download, jitter_upload, packetloss_download, packetloss_upload)))
 
     udp_file_fp.close()
-    return (bitrate_fromServer, bitrate_toServer, jitter_fromServer, jitter_toServer, packetloss_fromServer, packetloss_toServer)
+    return (bitrate_download, bitrate_upload, jitter_download, jitter_upload, packetloss_download, packetloss_upload)
 
 
 def get_bitrate_jitter_packet_loss_TCP(filename):
@@ -135,7 +141,7 @@ def get_bitrate_jitter_packet_loss_TCP(filename):
     reg_exp = r'\[  \d+\]   \d+.\d+-\d+.\d+  sec  \d+.\d+ MBytes  (?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+)) Mbits/sec                  (?P<origin>\w+)'
     columns_pattern = re.compile(reg_exp)
     
-    bitrate = bitrate_fromServer = bitrate_toServer = origin = ""
+    bitrate = bitrate_download = bitrate_upload = origin = ""
 
     tcp_file_fp = open(filename, "r")
 
@@ -148,15 +154,22 @@ def get_bitrate_jitter_packet_loss_TCP(filename):
             # print((bitrate, origin))
             if (bitrate != "" and origin != ""):
                 if (origin == "sender"):
-                    bitrate_toServer = bitrate
+                    bitrate_upload = bitrate
                 elif (origin == "receiver"):
-                    bitrate_fromServer = bitrate
-                #print("TCP: " + str((bitrate_toServer, bitrate_fromServer)))
+                    bitrate_download = bitrate
+                #print("TCP: " + str((bitrate_upload, bitrate_download)))
 
 
     tcp_file_fp.close()
-    return (bitrate_toServer, bitrate_fromServer)
+    return (bitrate_upload, bitrate_download)
 
+def get_max_bitrate_tcp(filename):
+    """TODO: buscar todos os bitrates do ficheiro tcp e devolver o bitrate maximo (ignorar os valores médios)"""
+    return "DEFAULT VALUE"
+
+def get_max_bitrate_udp(filename):
+    """TODO: buscar todos os bitrates do ficheiro udp e devolver o bitrate maximo (ignorar os valores médios)"""
+    return "DEFAULT VALUE"
 
 # Get the zone given as argument    
 zone = sys.argv[1]
