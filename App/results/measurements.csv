@@ -1,3 +1,2 @@
-Zone,Month,Day,Hour,Minute,Bandwidth,Jitter (To Server),Jitter (From Server),Packet Loss (To Server),Packet Loss (From Server),Bit Rate (With UDP - To Server),Bit Rate (With UDP - From Server),Bit Rate (With TCP - To Server),Bit Rate (With TCP - From Server)
-europe-west1-b,April,12,21,28,Wednesday,87.4,0.763,0.000,0.32,0,1.04,1.05,63.5,62.9
-europe-west1-b,April,12,21,50,Wednesday,87.4,0.763,0.000,0.32,0,1.04,1.05,63.5,62.9
+Zone,Datetime,Bandwidth,Upload Jitter,Download Jitter,Upload Packet Loss,Download Packet Loss,Upload Bit Rate (With UDP),Download Bit Rate (With UDP),Upload Bit Rate (With TCP),Download Bit Rate (With TCP)
+europe-west1-b,Thursday 13 April 18:17,87.4,0.763,0.000,0.32,0,1.04,1.05,63.5,62.9
