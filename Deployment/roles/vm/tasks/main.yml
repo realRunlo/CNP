@@ -47,7 +47,7 @@
 
       managed-by: "Ansible"
 
-      ssh-keys: ":\n"
+      ssh-keys: "runlo:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDh3Cz4FDX7df3bVWGzJlsHynwbMPUHQhzeg0NMXIW6N869coZpwOG037t6F9eZ1/EgIBqRC00ZO++QBAl2x5F8nakPBi8NdPktj64sAYlD5TJFGLanoah8oZq6iqmC5xlYWo19EAO66l3pjirWsQE5nCu5rVRsKo5NibQD+24+Kpc3lRwjcfSRDp4iT+19QATYnspLGDQQlnk5tdrllEJcSzm/s4RIHREtuFGPsEt1SqFVsU2FBY+KciuX0owDeU8lMvAwxN2F39ytlB0yNurw+kJ1FmaLHyexDdiHYeiTKWSsyQwD6I+eUGT8q8+9NziMQ9sn1l3JiWUNFGSGnlj+FRoJ8ZDmpRknQSPC2uQVG6jRNZVvj57lQvHMqlUJogUQ/p5HNI5OjoCtobb4hWMaTFO+lHUv5T3OpULcjpFv1LCCd5RaTHOpVLKZHCFRUFNZn7xx1WEtmgqBItKJbXem8Ws1qGH1Uu/nQ+80hL0vBKuCjFJjUjz/aakgn8GPnE8= runlo@Goncalos-MacBook-Air-5.local"
 
     zone: "{{instances[0].gce_zone}}"
 
