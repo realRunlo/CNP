@@ -42,34 +42,34 @@
       become: yes
       ansible.builtin.shell:
         cmd: sudo iperf -s -p 5201
-      async: 60
+      async: 100
       poll: 0
       delegate_to: "{{instances[0].gce_zone}}-instance"
 
     - name: Iperf - Bandwidth test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -p 5201  > results/{{instances[0].gce_zone}}/bandwidth.txt
+        cmd: sudo iperf -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -p 5201  > results/temp/bandwidth.txt
       delegate_to: localhost
 
     - name: Init iperf3 remote server 
       become: yes
       ansible.builtin.shell:
         cmd: sudo iperf3 -s -p 5202
-      async: 60
+      async: 100
       poll: 0
       delegate_to: "{{instances[0].gce_zone}}-instance"
     
     - name: Iperf3 - udp test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -u -p 5202 > results/{{instances[0].gce_zone}}/udp.txt
+        cmd: sudo iperf3 -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -u -p 5202 > results/temp/udp.txt
       delegate_to: localhost
 
     - name: Iperf3 - tcp test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo iperf3 -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 > results/{{instances[0].gce_zone}}/tcp.txt
+        cmd: sudo iperf3 -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 > results/temp/tcp.txt
       delegate_to: localhost
 
     - name: Turn off instance
@@ -81,8 +81,8 @@
         zone: "{{instances[0].gce_zone}}"
         status: "TERMINATED"
 
-    - name: Append new line into csv file [FALTA TESTAR]
+    - name: Append new line into csv file
       become: yes
       ansible.builtin.shell:
-       cmd: python3 build_csv.py {{instances[0].gce_zone}}
+       cmd: python3 results/build_csv.py {{instances[0].gce_zone}}
       delegate_to: localhost

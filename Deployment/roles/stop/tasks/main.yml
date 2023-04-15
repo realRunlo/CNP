@@ -6,3 +6,4 @@
     service_account_contents: "{{service_account_contents}}"
     zone: "{{instances[0].gce_zone}}"
     status: "TERMINATED"
+    state: present
