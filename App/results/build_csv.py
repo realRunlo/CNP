@@ -1,35 +1,12 @@
 import csv, os , re, sys, datetime
 
-FILENAME = "measurements.csv"
-
-# List with the values of the csv's header
-header_list = ["Zone", 
-               "Datetime", 
-               "Bandwidth", 
-               "Upload Jitter", 
-               "Download Jitter",
-               "Upload Packet Loss",
-               "Download Packet Loss",
-               "Upload Bit Rate (With UDP)", 
-               "Download Bit Rate (With UDP)", 
-               "Max Bit Rate (With UDP)",
-               "Upload Bit Rate (With TCP)",
-               "Download Bit Rate (With TCP)",
-               "Max Bit Rate (With TCP)"
-               ]
-
-
-"""
-TODO:
-- [Ver se função ansible funciona] Automatizar o processo de adicionar novas entradas no csv à medida que vamos fazendo os testes
-"""
-
 def append_line(line_list):
     """ Append a new line in the file "measurements.csv" """
     with open(FILENAME, 'a+', newline='') as f_object:
-	    writer_object = csv.writer(f_object)
-	    writer_object.writerow(line_list)
-	    f_object.close()
+	   
+        writer_object = csv.writer(f_object)
+        writer_object.writerow(line_list)
+        f_object.close()
     return f_object
 
 
@@ -205,20 +182,40 @@ def get_max_bitrate_udp(filename):
     print("UDP" + str(all_bitrates_stored))
     return max(all_bitrates_stored)
 
-# Get the zone given as argument    
-zone = sys.argv[1]
 
-line_to_add = process_files(zone,
-                            zone + "/bandwidth.txt", 
-                            zone + "/udp.txt",
-                            zone + "/tcp.txt")
+if __name__ == "__main__":
+    # Get the zone given as argument    
+    zone = sys.argv[1]
 
-if not os.path.isfile(FILENAME) or os.stat(FILENAME).st_size == 0:
-    with open(FILENAME, 'w', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerow(header_list)
-        writer.writerow(line_to_add)
-else:
-    with open(FILENAME, 'a+', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerow(line_to_add)
+    FILENAME = "results/measurements.csv"
+
+    # List with the values of the csv's header
+    header_list = ["Zone", 
+                "Datetime", 
+                "Bandwidth", 
+                "Upload Jitter", 
+                "Download Jitter",
+                "Upload Packet Loss",
+                "Download Packet Loss",
+                "Upload Bit Rate (With UDP)", 
+                "Download Bit Rate (With UDP)", 
+                "Max Bit Rate (With UDP)",
+                "Upload Bit Rate (With TCP)",
+                "Download Bit Rate (With TCP)",
+                "Max Bit Rate (With TCP)"
+                ]
+
+    line_to_add = process_files(zone,
+                                "results/temp/bandwidth.txt", 
+                                "results/temp/udp.txt",
+                                "results/temp/tcp.txt")
+
+    if not os.path.isfile(FILENAME) or os.stat(FILENAME).st_size == 0:
+        with open(FILENAME, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(header_list)
+            writer.writerow(line_to_add)
+    else:
+        with open(FILENAME, 'a+', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(line_to_add)
