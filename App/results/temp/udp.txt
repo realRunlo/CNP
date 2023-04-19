@@ -1,0 +1,19 @@
+Connecting to host 34.22.239.86, port 5202
+[  5] local 192.168.1.73 port 61347 connected to 34.22.239.86 port 5202
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec   129 KBytes  1.06 Mbits/sec  94  
+[  5]   1.00-2.00   sec   128 KBytes  1.05 Mbits/sec  93  
+[  5]   2.00-3.00   sec   128 KBytes  1.05 Mbits/sec  93  
+[  5]   3.00-4.00   sec   128 KBytes  1.05 Mbits/sec  93  
+[  5]   4.00-5.00   sec   128 KBytes  1.05 Mbits/sec  93  
+[  5]   5.00-6.00   sec   128 KBytes  1.05 Mbits/sec  93  
+[  5]   6.00-7.00   sec   128 KBytes  1.05 Mbits/sec  93  
+[  5]   7.00-8.00   sec   128 KBytes  1.05 Mbits/sec  93  
+[  5]   8.00-9.00   sec   128 KBytes  1.05 Mbits/sec  93  
+[  5]   9.00-10.00  sec   128 KBytes  1.05 Mbits/sec  93  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-10.00  sec  1.25 MBytes  1.05 Mbits/sec  0.000 ms  0/931 (0%)  sender
+[  5]   0.00-10.00  sec  1.25 MBytes  1.05 Mbits/sec  1.045 ms  0/931 (0%)  receiver
+
+iperf Done.

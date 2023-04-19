@@ -72,6 +72,37 @@
         cmd: sudo iperf3 -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} -p 5202 > results/temp/tcp.txt
       delegate_to: localhost
 
+    
+    - name: Start NTP server
+      become: yes
+      ansible.builtin.shell:
+        cmd: sudo service ntp start
+      delegate_to: "{{instances[0].gce_zone}}-instance"
+
+    - name: Add NTP server host
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        line: "{{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}}  NTP-server-host"
+      delegate_to: localhost
+   
+    - name: Syncronize local with remote clock
+      become: yes
+      ansible.builtin.shell:
+        cmd: sudo ntpdate NTP-server-host 
+      delegate_to: localhost
+
+    - name: Init OWD server
+      become: yes
+      ansible.builtin.shell:
+        cmd: sudo python main.py > results/temp/server.txt
+      delegate_to: "{{instances[0].gce_zone}}-instance"
+
+    - name: OWD test
+      become: yes
+      ansible.builtin.shell:
+        cmd: sudo python3 main.py > results/temp/client.txt
+      delegate_to: localhost
+
     - name: Turn off instance
       gcp_compute_instance:
         name: "{{instances[0].gce_zone}}-instance"

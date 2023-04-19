@@ -12,3 +12,35 @@
   become: yes
   ansible.builtin.shell:
     cmd: sudo apt install -y iperf3
+
+- name: Install iperf3
+  become: yes
+  ansible.builtin.shell:
+    cmd: sudo apt install -y iperf3
+
+- name: Install pip
+  become: yes
+  ansible.builtin.shell:
+    cmd: sudo apt install -y python-pip
+
+- name: Install pytz module
+  become: yes
+  ansible.builtin.shell:
+    cmd: sudo pip install pytz
+
+- name: Install ntp 
+  become: yes
+  ansible.builtin.shell:
+    cmd: sudo apt install -y ntp
+
+- name: Setup /etc/ntp.conf file
+  become: true 
+  copy:
+    src: ntp.conf
+    dest:  /etc/ntp.conf
+
+- name: Download owd-tool
+  become: true 
+  copy:
+    src: ../owd-tool/main.py
+    dest: /home/runlo
