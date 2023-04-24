@@ -66,7 +66,7 @@ def process_files (zone, bdw_file, udp_file, tcp_file):
 
 def get_bandwidth(filename):
     """Gets the bandwidth from file (the returned value type is String)"""
-    reg_exp = r'\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+\s+KBytes\s+(?P<bandwidth>\-?(\d+\.?\d*|\d*\.?\d+))\s+Kbits\/sec'
+    reg_exp = r'\[\s+\d+\]\s+\-?(\d+\.?\d*|\d*\.?\d+)\-\-?(\d+\.?\d*|\d*\.?\d+)\s+\w+\s+\-?(\d+\.?\d*|\d*\.?\d+)\s+\w+\s+(?P<bandwidth>\-?(\d+\.?\d*|\d*\.?\d+)\s+\w)\w+\/\w+'
     columns_pattern = re.compile(reg_exp)
     bandwidth = ""
     bdw_file_fp = open(filename, "r")
@@ -81,7 +81,7 @@ def get_bandwidth(filename):
 def get_bitrate_jitter_packet_loss_UDP(filename):
     """Gets the bitrate (from and to server), jitter (from and to server), packet loss (from and to server) from the UDP test"""
     # Digital number regex: "\-?(\d+\.?\d*|\d*\.?\d+)"
-    reg_exp = r'\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+.\d+\s+MBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+))\s+Mbits\/sec\s+(?P<jitter>\-?(\d+\.?\d*|\d*\.?\d+))\s+ms\s+\d+\/\d+\s+\((?P<packetloss>\-?(\d+\.?\d*|\d*\.?\d+))%\)\s+(?P<origin>\w+)'
+    reg_exp = r'\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+.\d+\s+MBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+)\s+\w)bits\/sec\s+(?P<jitter>\-?(\d+\.?\d*|\d*\.?\d+))\s+ms\s+\d+\/\d+\s+\((?P<packetloss>\-?(\d+\.?\d*|\d*\.?\d+))%\)\s+(?P<origin>\w+)'
     columns_pattern = re.compile(reg_exp)
 
     udp_file_fp = open(filename, "r")
@@ -115,7 +115,7 @@ def get_bitrate_jitter_packet_loss_UDP(filename):
 def get_bitrate_jitter_packet_loss_TCP(filename):
     """Gets the bitrate (from and to server) from TCP file"""
 
-    reg_exp = r'\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+.\d+\s+MBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+))\s+Mbits/sec\s+(?P<origin>\w+)'
+    reg_exp = r'\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+.\d+\s+MBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+)\s+\w)bits\/sec\s+(?P<origin>\w+)'
     columns_pattern = re.compile(reg_exp)
     
     bitrate = bitrate_download = bitrate_upload = origin = ""
@@ -142,7 +142,7 @@ def get_bitrate_jitter_packet_loss_TCP(filename):
 
 def get_max_bitrate_tcp(filename):
     """Get maximum bitrate from tcp file"""
-    reg_exp = r'^\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+.\d+\s+MBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+))\s+Mbits\/sec\s+$'
+    reg_exp = r'^\[\s+\d+\]\s+\d+.\d+-\d+.\d+\s+sec\s+\d+.\d+\s+MBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+)\s+\w)bits\/sec\s+$'
     columns_pattern = re.compile(reg_exp)
 
     bitrate = ""
@@ -155,15 +155,18 @@ def get_max_bitrate_tcp(filename):
         matches = columns_pattern.finditer(line)
         for match in matches:
             bitrate = match.group("bitrate")
+            medida = bitrate[-2:]
+            bitrate = bitrate[:-2]
             all_bitrates_stored.append(float(bitrate))
 
     tcp_file_fp.close()
     print("TCP" + str(all_bitrates_stored))
-    return max(all_bitrates_stored)
+
+    return str(max(all_bitrates_stored)) + medida
 
 def get_max_bitrate_udp(filename):
     """Get maximum bitrate from udp file"""
-    reg_exp = r'^\[\s*\d+\]\s+\d+\.\d+-\d+\.\d+\s+sec\s+\d+\s+KBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+))\s+Mbits\/sec\s+\d+\s+$'
+    reg_exp = r'^\[\s*\d+\]\s+\d+\.\d+-\d+\.\d+\s+sec\s+\d+\s+KBytes\s+(?P<bitrate>\-?(\d+\.?\d*|\d*\.?\d+)\s+\w)bits\/sec\s+\d+\s+$'
     columns_pattern = re.compile(reg_exp)
 
     bitrate = ""
@@ -176,18 +179,20 @@ def get_max_bitrate_udp(filename):
         matches = columns_pattern.finditer(line)
         for match in matches:
             bitrate = match.group("bitrate")
+            medida = bitrate[-2:]
+            bitrate = bitrate[:-2]
             all_bitrates_stored.append(float(bitrate))
 
     tcp_file_fp.close()
     print("UDP" + str(all_bitrates_stored))
-    return max(all_bitrates_stored)
+    return str(max(all_bitrates_stored)) + medida
 
 
 if __name__ == "__main__":
     # Get the zone given as argument    
     zone = sys.argv[1]
 
-    FILENAME = "results/measurements.csv"
+    FILENAME = "measurements.csv"
 
     # List with the values of the csv's header
     header_list = ["Zone", 
@@ -206,9 +211,9 @@ if __name__ == "__main__":
                 ]
 
     line_to_add = process_files(zone,
-                                "results/temp/bandwidth.txt", 
-                                "results/temp/udp.txt",
-                                "results/temp/tcp.txt")
+                                "temp/bandwidth.txt", 
+                                "temp/udp.txt",
+                                "temp/tcp.txt")
 
     if not os.path.isfile(FILENAME) or os.stat(FILENAME).st_size == 0:
         with open(FILENAME, 'w', newline='') as f:
