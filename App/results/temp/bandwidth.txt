@@ -1,7 +1,7 @@
 ------------------------------------------------------------
-Client connecting to 34.22.239.86, TCP port 5201
+Client connecting to 34.152.0.132, TCP port 5201
 TCP window size:  128 KByte (default)
 ------------------------------------------------------------
-[  1] local 192.168.1.73 port 61821 connected with 34.22.239.86 port 5201 (icwnd/mss/irtt=13/1408/40000)
+[  1] local 192.168.1.76 port 52325 connected with 34.152.0.132 port 5201 (icwnd/mss/irtt=13/1408/98000)
 [ ID] Interval       Transfer     Bandwidth
-[  1] 0.00-10.57 sec  95.9 MBytes  76.1 Mbits/sec
+[  1] 0.00-10.34 sec   108 MBytes  87.8 Mbits/sec

@@ -94,13 +94,15 @@
     - name: Init OWD server
       become: yes
       ansible.builtin.shell:
-        cmd: sudo python main.py > results/temp/server.txt
+        cmd: python3 main.py -s
+      async: 100
+      poll: 0
       delegate_to: "{{instances[0].gce_zone}}-instance"
 
     - name: OWD test
       become: yes
       ansible.builtin.shell:
-        cmd: sudo python3 main.py > results/temp/client.txt
+        cmd: python ../owd-tool/main.py -c {{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}} > results/temp/owd.txt
       delegate_to: localhost
 
     - name: Turn off instance
@@ -118,9 +120,9 @@
        cmd: python3 results/build_csv.py {{instances[0].gce_zone}}
       delegate_to: localhost
 
-    - name: Delete temp content
-      become: yes
-      ansible.builtin.shell: |
-        rm -r results/temp
-        mkdir results/temp
-      delegate_to: localhost
+    # - name: Delete temp content
+    #   become: yes
+    #   ansible.builtin.shell: |
+    #     rm -r results/temp
+    #     mkdir results/temp
+    #   delegate_to: localhost
