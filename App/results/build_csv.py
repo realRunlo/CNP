@@ -1,4 +1,4 @@
-import csv, os , re, sys, datetime
+import csv, os , re, sys, datetime, statistics
 
 def append_line(line_list):
     """ Append a new line in the file "measurements.csv" """
@@ -35,11 +35,11 @@ def get_month(mes):
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     return months[mes-1]
 
-def process_files (zone, bdw_file, udp_file, tcp_file):
-    """Handles all the three files from tests and append a line in the csv file"""
+def process_files (zone, bdw_file, udp_file, tcp_file, owd_file):
+    """Handles all the four files from tests and append a line in the csv file"""
     r = []
 
-    max_bitrate_udp = max_bitrate_tcp = bitrate_udp_download = bitrate_udp_upload = bitrate_tcp_download = bitrate_tcp_upload = jitter_download = jitter_upload = packetloss_download = packetloss_upload = bandwidth = ""
+    max_bitrate_udp = max_bitrate_tcp = bitrate_udp_download = bitrate_udp_upload = bitrate_tcp_download = bitrate_tcp_upload = jitter_download = jitter_upload = packetloss_download = packetloss_upload = bandwidth = owd = ""
 
     timestamp = get_timestamp()
     bandwidth = get_bandwidth(bdw_file)
@@ -47,6 +47,7 @@ def process_files (zone, bdw_file, udp_file, tcp_file):
     max_bitrate_tcp = get_max_bitrate_tcp(tcp_file)
     bitrate_udp_download, bitrate_udp_upload, jitter_download, jitter_upload, packetloss_download, packetloss_upload = get_bitrate_jitter_packet_loss_UDP(udp_file)
     bitrate_tcp_download, bitrate_tcp_upload = get_bitrate_jitter_packet_loss_TCP(tcp_file)
+    owd = get_one_way_delay(owd_file)
 
     r.append(zone)
     r.append(timestamp)
@@ -61,6 +62,7 @@ def process_files (zone, bdw_file, udp_file, tcp_file):
     r.append(bitrate_tcp_download)
     r.append(bitrate_tcp_upload)
     r.append(max_bitrate_tcp)
+    r.append(owd)
 
     return r
 
@@ -160,7 +162,7 @@ def get_max_bitrate_tcp(filename):
             all_bitrates_stored.append(float(bitrate))
 
     tcp_file_fp.close()
-    print("TCP" + str(all_bitrates_stored))
+    #print("TCP" + str(all_bitrates_stored))
 
     return str(max(all_bitrates_stored)) + medida
 
@@ -184,8 +186,31 @@ def get_max_bitrate_udp(filename):
             all_bitrates_stored.append(float(bitrate))
 
     tcp_file_fp.close()
-    print("UDP" + str(all_bitrates_stored))
+    #print("UDP" + str(all_bitrates_stored))
     return str(max(all_bitrates_stored)) + medida
+
+
+def get_one_way_delay(filename):
+    """Get maximum one way delay from owd file"""
+    reg_exp = r'(?P<owd>\-?(\d+\.?\d*|\d*\.?\d+))'
+    columns_pattern = re.compile(reg_exp)
+
+    owd = ""
+    all_owd_stored = []
+
+    owd_file_fp = open(filename, "r")
+
+    lines_owd_file_fp = owd_file_fp.read().splitlines()
+    for line in lines_owd_file_fp:
+        matches = columns_pattern.finditer(line)
+        for match in matches:
+            owd = match.group("owd")
+            all_owd_stored.append(float(owd))
+
+    owd_file_fp.close()
+    #print("UDP" + str(all_bitrates_stored))
+
+    return str('%.2f' % statistics.mean(all_owd_stored))
 
 
 if __name__ == "__main__":
@@ -207,13 +232,15 @@ if __name__ == "__main__":
                 "Max Bit Rate (With UDP)",
                 "Upload Bit Rate (With TCP)",
                 "Download Bit Rate (With TCP)",
-                "Max Bit Rate (With TCP)"
+                "Max Bit Rate (With TCP)",
+                "One-Way Delay"
                 ]
 
     line_to_add = process_files(zone,
                                 "temp/bandwidth.txt", 
                                 "temp/udp.txt",
-                                "temp/tcp.txt")
+                                "temp/tcp.txt",
+                                "temp/owd.txt")
 
     if not os.path.isfile(FILENAME) or os.stat(FILENAME).st_size == 0:
         with open(FILENAME, 'w', newline='') as f:
