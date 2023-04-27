@@ -1,2 +1,6 @@
-Zone,Datetime,Bandwidth,Upload Jitter,Download Jitter,Upload Packet Loss,Download Packet Loss,Upload Bit Rate (With UDP),Download Bit Rate (With UDP),Max Bit Rate (With UDP),Upload Bit Rate (With TCP),Download Bit Rate (With TCP),Max Bit Rate (With TCP)
-europe-west1-b,Thursday 27 April 18:33,87.8 M,0.922,0.000,0,0,1.05 M,1.05 M,1.06 M,90.0 M,88.4 M,106.0 M,58.21
+Zone,Datetime,Bandwidth,Upload Jitter,Download Jitter,Upload Packet Loss,Download Packet Loss,Upload Bit Rate (With UDP),Download Bit Rate (With UDP),Max Bit Rate (With UDP),Upload Bit Rate (With TCP),Download Bit Rate (With TCP),Max Bit Rate (With TCP),One-Way Delay
+europe-west1-b,Thursday 27 April 18:35,87.8 M,0.922,0.000,0,0,1.05 M,1.05 M,1.06 M,90.0 M,88.4 M,106.0 M,58.21
+europe-west1-b,Thursday 27 April 18:35,87.8 M,0.922,0.000,0,0,1.05 M,1.05 M,1.06 M,90.0 M,88.4 M,106.0 M,58.21
+europe-west1-b,Thursday 27 April 18:35,87.8 M,0.922,0.000,0,0,1.05 M,1.05 M,1.06 M,90.0 M,88.4 M,106.0 M,58.21
+europe-west1-b,Thursday 27 April 18:35,87.8 M,0.922,0.000,0,0,1.05 M,1.05 M,1.06 M,90.0 M,88.4 M,106.0 M,58.21
+europe-west1-b,Thursday 27 April 18:35,87.8 M,0.922,0.000,0,0,1.05 M,1.05 M,1.06 M,90.0 M,88.4 M,106.0 M,58.21

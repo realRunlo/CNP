@@ -221,19 +221,19 @@ if __name__ == "__main__":
 
     # List with the values of the csv's header
     header_list = ["Zone", 
-                "Datetime", 
-                "Bandwidth", 
-                "Upload Jitter", 
-                "Download Jitter",
-                "Upload Packet Loss",
-                "Download Packet Loss",
-                "Upload Bit Rate (With UDP)", 
-                "Download Bit Rate (With UDP)", 
-                "Max Bit Rate (With UDP)",
-                "Upload Bit Rate (With TCP)",
-                "Download Bit Rate (With TCP)",
-                "Max Bit Rate (With TCP)",
-                "One-Way Delay"
+                   "Datetime", 
+                   "Bandwidth", 
+                   "Upload Jitter", 
+                   "Download Jitter",
+                   "Upload Packet Loss",
+                   "Download Packet Loss",
+                   "Upload Bit Rate (With UDP)", 
+                   "Download Bit Rate (With UDP)", 
+                   "Max Bit Rate (With UDP)",
+                   "Upload Bit Rate (With TCP)",
+                   "Download Bit Rate (With TCP)",
+                   "Max Bit Rate (With TCP)",
+                   "One-Way Delay"
                 ]
 
     line_to_add = process_files(zone,
