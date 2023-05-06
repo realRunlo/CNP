@@ -120,9 +120,9 @@
        cmd: python3 results/build_csv.py {{instances[0].gce_zone}}
       delegate_to: localhost
 
-    # - name: Delete temp content
-    #   become: yes
-    #   ansible.builtin.shell: |
-    #     rm -r results/temp
-    #     mkdir results/temp
-    #   delegate_to: localhost
+    - name: Delete temp content
+      become: yes
+      ansible.builtin.shell: |
+        rm -r results/temp
+        mkdir results/temp
+      delegate_to: localhost

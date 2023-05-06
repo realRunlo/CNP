@@ -1,12 +1,12 @@
 instances:
 
-- name: dummy2
+- name: dummy7
 
   gce_machine_type: e2-micro
 
   gce_source_image: projects/ubuntu-os-cloud/global/images/family/ubuntu-1804-lts
 
-  gce_zone: northamerica-northeast1-a
+  gce_zone: me-west1-a
 
   gce_project: cnp-qsi 
 

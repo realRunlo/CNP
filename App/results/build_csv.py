@@ -35,7 +35,7 @@ def get_month(mes):
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     return months[mes-1]
 
-def process_files (zone, bdw_file, udp_file, tcp_file, owd_file):
+def process_files (zone, bdw_file,udp_file, tcp_file, owd_file):
     """Handles all the four files from tests and append a line in the csv file"""
     r = []
 
@@ -43,7 +43,6 @@ def process_files (zone, bdw_file, udp_file, tcp_file, owd_file):
 
     timestamp = get_timestamp()
     bandwidth = get_bandwidth(bdw_file)
-    max_bitrate_udp = get_max_bitrate_udp(udp_file)
     max_bitrate_tcp = get_max_bitrate_tcp(tcp_file)
     bitrate_udp_download, bitrate_udp_upload, jitter_download, jitter_upload, packetloss_download, packetloss_upload = get_bitrate_jitter_packet_loss_UDP(udp_file)
     bitrate_tcp_download, bitrate_tcp_upload = get_bitrate_jitter_packet_loss_TCP(tcp_file)
@@ -56,8 +55,6 @@ def process_files (zone, bdw_file, udp_file, tcp_file, owd_file):
     r.append(jitter_upload)
     r.append(packetloss_download)
     r.append(packetloss_upload)
-    r.append(bitrate_udp_download)
-    r.append(bitrate_udp_upload)
     r.append(max_bitrate_udp)
     r.append(bitrate_tcp_download)
     r.append(bitrate_tcp_upload)
@@ -226,9 +223,7 @@ if __name__ == "__main__":
                    "Upload Jitter", 
                    "Download Jitter",
                    "Upload Packet Loss",
-                   "Download Packet Loss",
-                   "Upload Bit Rate (With UDP)", 
-                   "Download Bit Rate (With UDP)", 
+                   "Download Packet Loss", 
                    "Max Bit Rate (With UDP)",
                    "Upload Bit Rate (With TCP)",
                    "Download Bit Rate (With TCP)",
@@ -237,10 +232,10 @@ if __name__ == "__main__":
                 ]
 
     line_to_add = process_files(zone,
-                                "temp/bandwidth.txt", 
-                                "temp/udp.txt",
-                                "temp/tcp.txt",
-                                "temp/owd.txt")
+                                "results/temp/bandwidth.txt",
+                                "results/temp/udp.txt",
+                                "results/temp/tcp.txt",
+                                "results/temp/owd.txt")
 
     if not os.path.isfile(FILENAME) or os.stat(FILENAME).st_size == 0:
         with open(FILENAME, 'w', newline='') as f:

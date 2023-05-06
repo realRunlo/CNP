@@ -5,7 +5,7 @@
     - vm
 
 - name: Installing tools
-  hosts: northamerica-northeast1-a-instance 
+  hosts: me-west1-a-instance 
   gather_facts: no
   roles:
     - tools

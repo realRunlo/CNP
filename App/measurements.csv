@@ -1,0 +1,16 @@
+Zone,Datetime,Bandwidth,Upload Jitter,Download Jitter,Upload Packet Loss,Download Packet Loss,Max Bit Rate (With UDP),Upload Bit Rate (With TCP),Download Bit Rate (With TCP),Max Bit Rate (With TCP),One-Way Delay
+europe-west1-b,Saturday 6 May 17:45,92.0 M,0.784,0.000,0,0,,93.3 M,92.6 M,104.0 M,51.12
+europe-west1-b,Saturday 6 May 17:48,91.4 M,0.832,0.000,0,0,,80.4 M,79.2 M,94.4 M,14.53
+europe-west1-b,Saturday 6 May 17:50,79.9 M,0.840,0.000,0,0,,93.3 M,92.3 M,100.0 M,22.63
+me-west1-a,Saturday 6 May 18:44,89.6 M,0.773,0.000,0,0,,90.6 M,90.0 M,107.0 M,46.41
+me-west1-a,Saturday 6 May 18:47,89.9 M,0.762,0.000,0,0,,91.5 M,90.1 M,107.0 M,37.81
+me-west1-a,Saturday 6 May 18:57,89.7 M,0.669,0.000,0,0,,91.7 M,90.3 M,99.8 M,25.51
+asia-east2-a,Saturday 6 May 19:22,70.7 M,0.740,0.000,0,0,,70.5 M,69.9 M,90.6 M,173.79
+asia-east2-a,Saturday 6 May 19:48,64.3 M,0.843,0.000,0,0,,64.6 M,64.0 M,85.0 M,291.99
+asia-east2-a,Saturday 6 May 19:53,63.4 M,0.802,0.000,0,0,,62.6 M,62.0 M,82.7 M,156.27
+australia-southeast1-a,Saturday 6 May 23:24,68.7 M,0.778,0.000,0,0,,68.7 M,68.0 M,88.7 M,369.06
+australia-southeast1-a,Saturday 6 May 23:30,68.4 M,0.695,0.000,0,0,,37.9 M,36.7 M,88.0 M,296.60
+australia-southeast1-a,Saturday 6 May 23:37,68.6 M,0.848,0.000,0,0,,68.5 M,67.9 M,88.8 M,107.01
+us-west1-a,Saturday 6 May 23:56,83.9 M,0.725,0.000,0,0,,85.5 M,84.2 M,103.0 M,82.77
+us-west1-a,Saturday 6 May 23:58,84.3 M,0.786,0.000,0,0,,85.6 M,84.5 M,105.0 M,74.15
+us-west1-a,Sunday 7 May 0:8,81.8 M,0.804,0.000,0,0,,81.0 M,80.1 M,97.3 M,65.76
