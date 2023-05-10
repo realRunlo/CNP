@@ -55,7 +55,6 @@ def process_files (zone, bdw_file,udp_file, tcp_file, owd_file):
     r.append(jitter_upload)
     r.append(packetloss_download)
     r.append(packetloss_upload)
-    r.append(max_bitrate_udp)
     r.append(bitrate_tcp_download)
     r.append(bitrate_tcp_upload)
     r.append(max_bitrate_tcp)
@@ -224,7 +223,6 @@ if __name__ == "__main__":
                    "Download Jitter",
                    "Upload Packet Loss",
                    "Download Packet Loss", 
-                   "Max Bit Rate (With UDP)",
                    "Upload Bit Rate (With TCP)",
                    "Download Bit Rate (With TCP)",
                    "Max Bit Rate (With TCP)",
