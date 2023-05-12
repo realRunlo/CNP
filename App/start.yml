@@ -82,8 +82,13 @@
     - name: Add NTP server host
       ansible.builtin.lineinfile:
         path: /etc/hosts
-        line: "{{result.resources[0].networkInterfaces[0].accessConfigs[0].natIP}}  NTP-server-host"
+        regexp: '^.*\s+NTP-server-host$'
+        line: "{{ result.resources[0].networkInterfaces[0].accessConfigs[0].natIP }}  NTP-server-host"
+        state: present
+        create: yes
       delegate_to: localhost
+
+
    
     - name: Syncronize local with remote clock
       become: yes
