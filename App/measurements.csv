@@ -1,7 +1,11 @@
 Zone,Datetime,Bandwidth,Upload Jitter,Download Jitter,Upload Packet Loss,Download Packet Loss,Upload Bit Rate (With TCP),Download Bit Rate (With TCP),Max Bit Rate (With TCP),One-Way Delay
-europe-west1-b,Saturday 6 May 10:15,90.0 M,0.839,0.000,0,0,91.6 M,92.6 M,104.0 M,13.68
-europe-west1-b,Saturday 6 May 12:37,92.0 M,0.767,0.000,0,0,92.3 M,92.6 M,104.0 M,14.30
-europe-west1-b,Saturday 6 May 15:05,91.5 M,0.835,0.000,0,0,80.5 M,92.6 M,104.0 M,15.05
+europe-west1-b,Saturday 6 May 10:15,90.0 M,0.839,0.000,0,0,91.6 M,92.6 M,100.5 M,13.68
+me-west1-a,Saturday 6 May 10:19,88.6 M,0.725,0.000,0,0,91.8 M,91.6 M,108.5 M,42.23
+asia-east2-a,Saturday 6 May 10:22,70.7 M,0.740,0.000,0,0,68.9 M,65.4 M,90.6 M,134.45
+europe-west1-b,Saturday 6 May 12:37,92.0 M,0.767,0.000,0,0,92.3 M,92.3 M,105.1 M,14.30
+asia-east2-a,Saturday 6 May 12:43,62.7 M,0.935,0.000,0,0,72.9 M,59.8 M,80.5 M,178.05
+me-west1-a,Saturday 6 May 12:50,88.6 M,0.802,0.000,0,0,87.8 M,88.6 M,101.2 M,49.67
+europe-west1-b,Saturday 6 May 15:05,91.5 M,0.835,0.000,0,0,80.5 M,92.6 M,104.3 M,15.05
 europe-west1-b,Saturday 6 May 17:45,92.0 M,0.784,0.000,0,0,93.3 M,92.6 M,104.0 M,51.12
 europe-west1-b,Saturday 6 May 17:48,91.4 M,0.832,0.000,0,0,80.4 M,79.2 M,94.4 M,14.53
 europe-west1-b,Saturday 6 May 17:50,79.9 M,0.840,0.000,0,0,93.3 M,92.3 M,100.0 M,22.63
@@ -9,7 +13,7 @@ me-west1-a,Saturday 6 May 18:44,89.6 M,0.773,0.000,0,0,90.6 M,90.0 M,107.0 M,46.
 me-west1-a,Saturday 6 May 18:47,89.9 M,0.762,0.000,0,0,91.5 M,90.1 M,107.0 M,37.81
 me-west1-a,Saturday 6 May 18:57,89.7 M,0.669,0.000,0,0,91.7 M,90.3 M,99.8 M,25.51
 asia-east2-a,Saturday 6 May 19:22,70.7 M,0.740,0.000,0,0,70.5 M,69.9 M,90.6 M,173.79
-asia-east2-a,Saturday 6 May 19:48,64.3 M,0.843,0.000,0,0,64.6 M,64.0 M,85.0 M,291.99
+asia-east2-a,Saturday 6 May 19:48,64.3 M,0.843,0.000,0,0,64.6 M,64.0 M,85.0 M,231.99
 asia-east2-a,Saturday 6 May 19:53,63.4 M,0.802,0.000,0,0,62.6 M,62.0 M,82.7 M,156.27
 australia-southeast1-a,Saturday 6 May 23:24,68.7 M,0.778,0.000,0,0,68.7 M,68.0 M,88.7 M,369.06
 australia-southeast1-a,Saturday 6 May 23:30,68.4 M,0.695,0.000,0,0,37.9 M,36.7 M,88.0 M,296.60
@@ -65,7 +69,7 @@ europe-west1-b,Wednesday 10 May 16:20,90.3 M,0.791,0.000,0,0,93.1 M,92.1 M,99.9 
 australia-southeast1-a,Wednesday 10 May 16:36,68.6 M,0.719,0.000,0,0,68.7 M,68.0 M,88.9 M,145.62
 australia-southeast1-a,Wednesday 10 May 16:39,68.3 M,0.768,0.000,0,0,69.3 M,68.7 M,89.3 M,145.61
 australia-southeast1-a,Wednesday 10 May 16:45,68.2 M,0.786,0.000,0,0,68.3 M,67.7 M,88.9 M,138.48
-asia-east2-a,Wednesday 10 May 17:1,29.4 M,0.781,0.000,0,0,70.9 M,70.2 M,91.1 M,163.54
+asia-east2-a,Wednesday 10 May 17:10,29.4 M,0.781,0.000,0,0,70.9 M,70.2 M,91.1 M,163.54
 asia-east2-a,Wednesday 10 May 17:25,70.3 M,0.698,0.000,0,0,70.1 M,69.5 M,90.7 M,141.14
 asia-east2-a,Wednesday 10 May 17:30,70.5 M,0.745,0.000,0,0,71.3 M,70.7 M,91.1 M,139.00
 asia-east2-a,Wednesday 10 May 22:9,70.8 M,0.761,0.000,0,0,71.2 M,70.5 M,90.6 M,204.22
@@ -80,3 +84,8 @@ europe-west1-b,Wednesday 10 May 22:51,91.9 M,0.776,0.000,0,0,93.5 M,92.5 M,97.6 
 me-west1-a,Wednesday 10 May 22:55,89.4 M,0.780,0.000,0,0,91.0 M,89.7 M,103.0 M,45.90
 me-west1-a,Wednesday 10 May 22:59,89.8 M,0.828,0.000,0,0,91.6 M,90.2 M,106.0 M,22.16
 me-west1-a,Wednesday 10 May 23:5,89.6 M,0.901,0.000,0,0,91.9 M,90.6 M,107.0 M,34.33
+europe-west1-b,Thursday  11 May 10:5,91.0 M,0.739,0.000,0,0,91.6 M,92.8 M,101.5 M,13.80
+asia-east2-a,Thursday  11 May 10:10,31.5 M,0.781,0.000,0,0,69.6 M,69.1 M,90.2 M,195.54
+australia-southeast1-a,Thursday  11 May 10:20,17.2 M,0.715,0.000,0,0,68.7 M,65.1 M,89.5 M,195.20
+me-west1-a,Thursday  11 May 10:25,89.8 M,0.882,0.000,0,0,90.2 M,91.2 M,104.0 M,43.11
+us-west1-a,Thursday 11 May 10:28,84.3 M,0.632,0.000,0,0,87.2 M,88.2 M,98.5 M,65.35
